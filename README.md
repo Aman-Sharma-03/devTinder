@@ -42,3 +42,8 @@
         <!-- GET /users => middleware chain => request handler -->
 
         - app.use matches the path that starts with that path while app.all will match specifically to that path
+
+    # Error handling
+        - error handling can be performed using app.use also
+        - app.use("/", (err, req, res, next) => {});
+        
