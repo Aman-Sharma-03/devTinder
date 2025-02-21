@@ -26,3 +26,19 @@
 
         - next() always expect a next route handler
         
+        - either pass them inside the same route or write a different route with handler, like
+            - req.use("/user", (req, res, next) => {
+                console.log("Handling the route user!!");
+                next();
+            })
+              req.use("/user", (req, res, next) => {
+                console.log("Handling the route user!!");
+                res.send("2nd Route Handler!!");
+              })
+
+        - function that we put in the middle are called middlewares 
+        - only the function that returns some response is called route handler
+
+        <!-- GET /users => middleware chain => request handler -->
+
+        - app.use matches the path that starts with that path while app.all will match specifically to that path

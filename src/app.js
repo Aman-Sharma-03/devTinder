@@ -1,9 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const {userAuth} = require("./middlewares/auth");
 
 const app = express();
 
-// app.use(bodyParser);
+app.use(userAuth);
 
 const PORT = 3000 || process.PORT
 
