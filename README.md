@@ -88,3 +88,9 @@
         }
         next();
     }
+
+# Mongoose functions
+    - To create - user.save();
+    - To get - User.find({}), User.findOne({})
+    - To delete - User.findByIdAndDelete(id)
+        - findByIdAndDelete is shorthand for findOneAndDelete({_id: id})
