@@ -94,3 +94,31 @@
     - To get - User.find({}), User.findOne({})
     - To delete - User.findByIdAndDelete(id)
         - findByIdAndDelete is shorthand for findOneAndDelete({_id: id})
+
+# Data Sanitization & Schema Validation
+    - In POST & PATCH api we are posting and updating data
+    - We need to only insert validated and sanitized data
+    - We can't insert anything we receive
+
+    - We can add strict checks inside the schema model
+        - mandatory required fields (required: true) - refer models/user.js
+    
+    - Custom Validation function in mongoose Schema
+        validate(value) {
+            if(["male", "female", "Other"].includes(value)){
+                throw new Error("Gender data is not valid");
+            }
+        }
+
+    - validations won't run when we patch data, they only run when the new User is created
+
+    - We can pass the runValidators options as true in the patch mongoose call to validate
+
+## API Level Validation (Data Sanitization)
+    - We user is signing in we don't need all the fields we just need few, like firstname, lastname, emailid, password
+    
+    - EmailId changes are not allowed
+    - NEVER TRUST USER DATA - YOU SHOULD ALWAYS ADD VALIDATION TO EACH AND EVERY FIELD, SPECIALLY IN PUT & PATCH
+
+    - Library - validator.js (npm)
+    

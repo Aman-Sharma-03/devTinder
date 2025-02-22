@@ -13,15 +13,15 @@ app.use(bodyParser);
 
 // User SignUp
 app.post("/signup", async (req, res) => {
-    const user = new User(req.body);
     try {
+        const user = new User(req.body);
         const createdUser = await user.save();
         res.send({
             "New User": createdUser
         });
     } catch(err){
-        console.log("Error Creating user: ", err);
-        res.status(400).send("Error Creating an User: ", err.message);
+        console.log("Error Creating user");
+        res.status(400).send(err.message);
     }
 })
 
@@ -62,14 +62,28 @@ app.get("/feed", async (req, res) => {
 })
 
 // Update user
-app.patch("/user", async (req, res) => {
-    const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req.params?.userId;
     const data = req.body;
+
     try{
-        const deletedUser = await User.findByIdAndUpdate(userId, data, {returnDocument: "after"});
+        const ALLOWED_UPDATES = ["userId", "photoUrl", "about", "gender", "age", "skills"]
+
+        const isUpdateAllowed = Object.keys(data).every(k => ALLOWED_UPDATES.includes(k))
+
+        if(!isUpdateAllowed){
+            throw new Error("Update not allowed");
+        }
+        if(data?.skills?.length >= 10){
+            throw new Error("Skills cannot be more than 10");
+        }
+        const deletedUser = await User.findByIdAndUpdate(userId, data, {
+            returnDocument: "after", 
+            runValidators: true
+        });
         res.send("User Updated successfully");
     } catch(err) {
-        res.status(400).send("Something went wrong");
+        res.status(400).send("Something went wrong" + err.message);
     }
 })
 
