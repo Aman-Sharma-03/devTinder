@@ -43,7 +43,18 @@
 
         - app.use matches the path that starts with that path while app.all will match specifically to that path
 
-    # Error handling
-        - error handling can be performed using app.use also
-        - app.use("/", (err, req, res, next) => {});
-        
+# Error handling
+    - error handling can be performed using app.use also
+    - app.use("/", (err, req, res, next) => {});
+    
+# Database Connection
+    - mongoose.connect(uri)
+    - First the database connection should be made and after that server should start listening
+
+# Schema Design
+    - What all you will be storing in the database
+    - mongoose.Schema(object)
+    - this object contains the definition {firstName: {type: String},...}
+
+    - mongoose.model("alias", schema);
+    - model is like a class, we create new instances of class when new user comes
