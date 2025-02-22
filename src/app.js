@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require("./custom/bodyParser");
+// const bodyParser = require('body-parser');
 const {connectDB} = require("./config/database");
 const User = require("./models/user")
 
@@ -7,16 +8,11 @@ const app = express();
 
 const PORT = 3000 || process.env.PORT;
 
-app.use(bodyParser.json());
+// Custom BodyParser
+app.use(bodyParser);
 
 app.post("/signup", async (req, res) => {
-    const userObj = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        emailId: req.body.emailId,
-        password: req.body.password,
-    }
-    const user = new User(userObj);
+    const user = new User(req.body);
     try {
         const createdUser = await user.save();
         res.send({

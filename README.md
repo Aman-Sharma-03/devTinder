@@ -58,3 +58,33 @@
 
     - mongoose.model("alias", schema);
     - model is like a class, we create new instances of class when new user comes
+
+# Creating my own Body Parser
+    - express provides body parser middleware
+        - express.json()
+        - bodyParser.json()
+
+    - My own bodyparser
+    const bodyParser = async (req, res, next) => {
+        let body = []
+        // because the request body might be sent in multiple chunks so we await for each chunk
+        for await(const chunk of req){
+            body.push(chunk);
+        }
+        body = Buffer.concat(body).toString('utf-8');
+        req.body = body;
+        if(req.headers['content-type'] === 'application/json'){
+            req.body =  JSON.parse(body);
+            const params = new URLSearchParams("name=Aman&age=10");
+            const queries = params.entries();
+            console.log(queries);
+        } else if(req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+            // URLSearchParams is an object to parse, manipulate, and serialize query strings
+            let params = new URLSearchParams(body);
+            // .entries is an iterator for the params we have recieved
+            let queries = params.entries();
+            // fromEntries transforms a list of key-value pairs into an object
+            req.body = Object.fromEntries(queries);
+        }
+        next();
+    }
