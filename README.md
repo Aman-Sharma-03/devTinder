@@ -122,3 +122,9 @@
 
     - Library - validator.js (npm)
     
+
+# Password Encryption
+    - npm bcrypt
+
+    - Hashing
+        Password and salt are taken and multiple round of encryption is done to encrypt the password

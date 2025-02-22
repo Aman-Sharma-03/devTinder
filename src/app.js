@@ -3,6 +3,8 @@ const bodyParser = require("./custom/bodyParser");
 // const bodyParser = require('body-parser');
 const {connectDB} = require("./config/database");
 const User = require("./models/user")
+const bcrypt = require("bcrypt");
+const {validateSignUpData, validateLoginData} = require("./utils/validation")
 
 const app = express();
 
@@ -11,16 +13,52 @@ const PORT = 3000 || process.env.PORT;
 // Custom BodyParser
 app.use(bodyParser);
 
+app.post("/login", async (req, res) => {
+    try{
+        const {emailId, password} = req.body;
+        // Validation
+        validateLoginData(req);
+
+        const user = await User.findOne({emailId: emailId});
+        if(!user) {
+            throw new Error("User doesn't exist");
+        }
+        
+        // compare the password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if(!isPasswordValid){
+            throw new Error("Invalid credentials");
+        }
+        res.send("Login Successfull");
+    } catch(err){
+        res.status(400).send("Error: "+ err.message);
+    }
+})
+
 // User SignUp
 app.post("/signup", async (req, res) => {
+
     try {
-        const user = new User(req.body);
+        // Validation of the data
+        validateSignUpData(req);
+
+        const {firstName, lastName, emailId, password} = req.body;
+
+        // Encrypt the password
+        const passwordHash = await bcrypt.hash(password, 10);
+
+        // Store the data
+        const user = new User({
+            firstName,
+            lastName, 
+            emailId, 
+            password: passwordHash, 
+        })
+
         const createdUser = await user.save();
-        res.send({
-            "New User": createdUser
-        });
+        res.send("User Created Successfully");
     } catch(err){
-        console.log("Error Creating user");
+        console.log("Error Creating user" + err.message);
         res.status(400).send(err.message);
     }
 })
