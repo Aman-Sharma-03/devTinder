@@ -1,12 +1,25 @@
-const userAuth = (req, res, next) => {
-    console.log("Auth is getting checked!");
-    const token = 'xyz';
-    const isUserAuthorized = token === "xyz";
-    if(isUserAuthorized){
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
+const userAuth = async (req, res, next) => {
+    try{
+        const {token} = req.cookies;
+        if(!token){
+            throw new Error("Token is missing")
+        }
+
+        const {_id} = jwt.verify(token, "Abrakadabra");
+    
+        const user = await User.findOne({_id});
+        if(!user) {
+            throw new Error("User not found");
+        }
+        req.user = user;
         next();
-    } else {
-        res.status(401).send("Unauthorized request");
+    } catch(err) {
+        res.status(400).send("ERROR: "+err.message);
     }
+
 }
 
 module.exports = {userAuth}

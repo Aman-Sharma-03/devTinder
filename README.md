@@ -140,5 +140,10 @@
         - data can be hide in payload of JWT
 
         jsonwebtoken is the library to generate a jwt token
-        - To generate: jwt.sign({data to hide}, "SECRET")
+        - To generate: jwt.sign({data to hide}, "SECRET", {exiresIn: '7d'})
             we generally hide the userid inside the jwt payload to verify the user
+
+# Mongoose Schema Methods
+    - Coupling the closely related things together
+    - We can define the methods in the Schema itself
+    - Helps offload the major tasks
