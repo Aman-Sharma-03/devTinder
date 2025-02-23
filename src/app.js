@@ -5,6 +5,8 @@ const {connectDB} = require("./config/database");
 const User = require("./models/user")
 const bcrypt = require("bcrypt");
 const {validateSignUpData, validateLoginData} = require("./utils/validation")
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -12,6 +14,8 @@ const PORT = 3000 || process.env.PORT;
 
 // Custom BodyParser
 app.use(bodyParser);
+
+app.use(cookieParser());
 
 app.post("/login", async (req, res) => {
     try{
@@ -26,10 +30,18 @@ app.post("/login", async (req, res) => {
         
         // compare the password
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if(!isPasswordValid){
+        if(isPasswordValid){
+
+            // Create a JWT Token
+            const token = await jwt.sign({ _id: user._id }, "Abrakadabra");
+
+            // Add the token to the cookie and send a response back to the user
+            res.cookie("token", token);
+
+            res.send("Login Successfull");
+        } else {
             throw new Error("Invalid credentials");
         }
-        res.send("Login Successfull");
     } catch(err){
         res.status(400).send("Error: "+ err.message);
     }
@@ -60,6 +72,26 @@ app.post("/signup", async (req, res) => {
     } catch(err){
         console.log("Error Creating user" + err.message);
         res.status(400).send(err.message);
+    }
+})
+
+app.get("/profile", async (req, res) => {
+    try{
+        const {token} = req.cookies;
+        if(!token){
+            throw new Error("Invalid Token");
+        }
+        // Validate my token
+        const {_id} = jwt.verify(token, "Abrakadabra");
+        
+        const user = await User.findOne({_id});
+        if(!user){
+            throw new Error("User doesn't exist, please try logging in again");
+        }
+        
+        res.send(user);
+    } catch(err) {
+        res.send("ERROR: "+err.message)
     }
 })
 

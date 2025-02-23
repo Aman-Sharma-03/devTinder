@@ -128,3 +128,17 @@
 
     - Hashing
         Password and salt are taken and multiple round of encryption is done to encrypt the password
+
+# Authentication, JWT & Cookies
+    - on login email and password is validated and then a jwt cookie is sent to the client
+    - now whenever user asks for something that needs authentication, this jwt cookie is sent along with the request and then on the server end it is revalidated
+    
+    - If the cookie has expired then the revalidation fails, user needs to authenticate again
+
+    ## JWT:
+        - JWT token is divided into 3 parts, header, payload and signature
+        - data can be hide in payload of JWT
+
+        jsonwebtoken is the library to generate a jwt token
+        - To generate: jwt.sign({data to hide}, "SECRET")
+            we generally hide the userid inside the jwt payload to verify the user
