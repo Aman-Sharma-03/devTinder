@@ -157,3 +157,25 @@
     authRouter.post("/", (req, res) => {})
 
     module.exports = authRouter;
+
+# Mongoose Schema pre
+    - it is kinda middleware
+    - can be used to put validations
+    - there are some comparison functions too
+
+
+# Indexes in Mongo
+    - makes the search faster (sorts the data in particular fashion)
+    - we will be finding user by emailId a lot so we can make it as a index in user schema
+    
+    - MongoDB automatically creates index on unique fields
+    emailId: {
+        type: String,
+        required: true,
+        index: true,
+    } 
+
+    - Compound Index => putting index on more than 1 field
+    connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 })
+    1 => ascending order
+    -1 => descending order
