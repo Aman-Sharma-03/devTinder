@@ -179,3 +179,13 @@
     connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 })
     1 => ascending order
     -1 => descending order
+
+# Though Process - POST vs GET
+    - POST - user sends some data, massage it and save it
+    - GET - user asks for some info, get it from db massage it and send it back
+
+# Building Relation Between Schemas
+    - provide a ref to the schema
+    - then after that we can populate the current schema with the reference schema
+
+    - it is like joins in SQL
