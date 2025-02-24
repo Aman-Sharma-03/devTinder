@@ -147,3 +147,13 @@
     - Coupling the closely related things together
     - We can define the methods in the Schema itself
     - Helps offload the major tasks
+
+
+# Express Router
+    - Helps to group up routes together
+
+    const authRouter = express.Router();
+
+    authRouter.post("/", (req, res) => {})
+
+    module.exports = authRouter;
