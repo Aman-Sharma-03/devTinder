@@ -5,7 +5,7 @@ const userAuth = async (req, res, next) => {
     try{
         const {token} = req.cookies;
         if(!token){
-            throw new Error("Token is missing")
+            return res.status(401).send("Please Login");
         }
 
         const {_id} = jwt.verify(token, "Abrakadabra");
@@ -17,7 +17,7 @@ const userAuth = async (req, res, next) => {
         req.user = user;
         next();
     } catch(err) {
-        res.status(400).send("ERROR: "+err.message);
+        res.status(400).send(err.message);
     }
 
 }

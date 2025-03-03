@@ -32,14 +32,14 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         const updatedUser = await User.findOneAndUpdate({ _id: loggedInUser._id }, data, { 
             new: true,
             runValidators: true
-        });
+        }).select("firstName lastName emailId photoUrl about skills age gender");
         res.json({
             message: "User Update Successful",
             data: updatedUser
         })
 
     } catch(err) {
-        res.send("ERROR: " + err.message);
+        res.status(400).send("ERROR: " + err.message);
     }
 })
 
