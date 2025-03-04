@@ -197,3 +197,9 @@
 
     - .skip(0) .limit(10)
     - .skip((page-1)*limit).limit(limit);
+
+
+# Automated AWS SES email setup
+    - Code Example https://github.com/awsdocs/aws-doc-sdk-example/tree/main/javascriptv3/example_code/ses#code-examples
+    - npm i @aws-sdk/client-ses
+    - Create sesClient.js

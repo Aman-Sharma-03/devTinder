@@ -6,6 +6,8 @@ const ConnectionRequest = require("../models/connectionRequest");
 const { findOne } = require("../models/user");
 const User = require("../models/user")
 
+const sendEmail = require("../utils/sendEmail")
+
 requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res) => {
     try{
         const fromUserId = req.user._id;
@@ -45,6 +47,11 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
             return res.status(404).json({message: "User not Found"});
         }
         const data = await connectionRequest.save();
+        if(status === "interested"){
+            const emailRes = await sendEmail.run("You got a New Connection Request from "+req.user.firstName, `<div>Hey ${toUser.firstName}, You got a new connection request from ${req.user.firstName} on devTinder. Please login to your account to review the request. <a href="https://www.devtinder.in">devtinder.in</a></div>`);
+            console.log(emailRes);
+        }
+
         res.json({
             message: "Connection Request Sent!",
             data
