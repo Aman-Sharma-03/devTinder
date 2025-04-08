@@ -1,5 +1,4 @@
 const {SendEmailCommand} = require('@aws-sdk/client-ses');
-import { SendEmailCommand } from './../../node_modules/@aws-sdk/client-ses/dist-es/commands/SendEmailCommand';
 const {sesClient} = require('./sesClient.js');
 
 const createSendEmailCommand = (toAddress, fromAddress, subject, emailBody) => {
