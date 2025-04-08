@@ -10,7 +10,7 @@ require("dotenv").config();
 
 // Custom BodyParser
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://dev-tinder-9hd30vimo-aman-sharmas-projects.vercel.app"],
     credentials: true,
 }));
 app.use(bodyParser.json());
