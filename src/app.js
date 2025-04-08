@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
 
-require("dotenv").config();
+require('dotenv').config();
 
 // Custom BodyParser
 
