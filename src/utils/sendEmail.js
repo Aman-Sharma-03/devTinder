@@ -10,16 +10,16 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, emailBody) => {
         Message: {
             Body: {
                 Html: {
-                    Charset: "UTF-8",
-                    Data: "HTML_FORMAT_BODY",
+                    Charset: 'UTF-8',
+                    Data: 'HTML_FORMAT_BODY',
                 },
                 Text: {
-                    Charset: "UTF-8",
+                    Charset: 'UTF-8',
                     Data: `${emailBody}`,
                 },
             },
             Subject: {
-                Charset: "UTF-8",
+                Charset: 'UTF-8',
                 Data: `${subject}`,
             },
         },
@@ -29,16 +29,16 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, emailBody) => {
 };
 
 const run = async (subject, emailBody) => {
-    const SendEmailCommand = createSendEmailCommand("to", "from", subject, emailBody);
+    const SendEmailCommand = createSendEmailCommand('to', 'from', subject, emailBody);
     try {
         return await sesClient.send(SendEmailCommand);
     } catch (err) {
-        if(!err instanceof Error && err.name === "MessageRejected"){
+        if(!err instanceof Error && err.name === 'MessageRejected'){
             const messageRejected = err;
             return messageRejected;
         }
         throw err;
     }
-}
+};
 
 module.exports = {run};

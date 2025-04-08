@@ -23,12 +23,7 @@ jobs:
         run: npm install
       
       - name: Lint (Optional)
-        run: |
-          if [ -f .eslintrc.js ] || [ -f .eslintrc.json ]; then
-            npm run lint || echo "Linting failed"
-          else
-            echo "No lint config found, skipping..."
-          fi
+        run: npm run lint
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
