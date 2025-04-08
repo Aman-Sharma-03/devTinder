@@ -9,8 +9,17 @@ const app = express();
 require("dotenv").config();
 
 // Custom BodyParser
+
+const allowedOrigins = ["http://localhost:5173", "https://dev-tinder-web-eta.vercel.app"];
+
 app.use(cors({
-    origin: ["http://localhost:5173", "https://dev-tinder-web-eta.vercel.app"],
+    origin: (origin, callback) => {
+        if(!origin || allowedOrigins.includes(origin)){
+            callback(null, origin);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 }));
 app.use(bodyParser.json());
