@@ -1,4 +1,4 @@
-name: Backend CI
+name: Backend CI + Manual Deploy
 
 on:
   push:
@@ -29,3 +29,10 @@ jobs:
           else
             echo "No lint config found, skipping..."
           fi
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+      - name: Deploy to Render
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
