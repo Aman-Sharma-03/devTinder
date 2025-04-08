@@ -1,0 +1,31 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request: 
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22.14.0'
+
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Lint (Optional)
+        run: |
+          if [ -f .eslintrc.js ] || [ -f .eslintrc.json ]; then
+            npm run lint || echo "Linting failed"
+          else
+            echo "No lint config found, skipping..."
+          fi
