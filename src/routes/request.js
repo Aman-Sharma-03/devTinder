@@ -111,6 +111,17 @@ requestRouter.post(
       }
       connectionRequest.status = status;
       await connectionRequest.save();
+      if (status === 'accepted') {
+        const io = getIO();
+        io.to(connectionRequest.fromUserId.toString()).emit(
+          'request_accepted',
+          {
+            from: loggedInUser._id.toString(),
+            name: loggedInUser.firstName + ' ' + loggedInUser.lastName,
+            message: `${loggedInUser.firstName} accepted your connection request!`,
+          }
+        );
+      }
       res.json({ message: 'Connection request: ' + status });
     } catch (err) {
       res.status(400).json('ERROR: ' + err.message);
