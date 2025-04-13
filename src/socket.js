@@ -3,10 +3,16 @@ const { socketAuthUser } = require('./middlewares/auth');
 
 let io;
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://dev-tinder-web-eta.vercel.app',
+  'https://devhive.jaii.in',
+];
+
 const init = (server) => {
   io = new Server(server, {
     cors: {
-      origin: 'http://localhost:5173',
+      origin: allowedOrigins,
       credentials: true,
     },
   });
